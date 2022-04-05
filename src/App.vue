@@ -1,85 +1,31 @@
 <template>
   <div class="container">
-    <Header :showAddTask="showAddTask" @toggle-add-task="toggleAddTask" title="Hello World"/>
-    <div v-show="showAddTask">
-    <AddTask @add-task="addTask"  />
-    </div>
-    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
+    <Header :showAddTask="showAddTask" @toggle-add-task="toggleAddTask" title="Vue Task Tracker"/>
+    <router-view :showAddTask="showAddTask" />
+    <Footer />
   </div>
-  <router-view/>
 </template>
 
 <script>
   import Header from './components/Header'
-  import Tasks from './components/Tasks'
-  import AddTask from './components/AddTask'
+  import Footer from './components/Footer'
 
   export default {
     name: 'App',
     components: {
       Header,
-      Tasks,
-      AddTask
+      Footer,
     },
     data() {
       return {
-        tasks: [],
         showAddTask: false
       }
     },
     methods: {
-      async deleteTask(id) {
-        if(confirm("do you want to delete this task?")) {
-          const res = await fetch(`http://localhost:5000/tasks/${id}`, {
-            method: 'DELETE'
-          })
-          if (res.status === 200) {
-            this.tasks = this.tasks.filter((task) => task.id !== id)
-          } else {
-            alert('Error deleting tasks')
-          }
-        }
-      },
-      toggleReminder(id) {
-        for (const task of this.tasks) {
-          if (task.id == id) {
-            task.reminder = !task.reminder
-            break
-          }
-        }
-      },
-      async addTask(task) {
-        task = await this.addTaskAPI(task)
-        this.tasks.push(task)
-        alert(task.id)
-      },
       toggleAddTask() {
         this.showAddTask = !this.showAddTask
       },
-      async fetchTasks() {
-        const res = await fetch('http://localhost:5000/tasks')
-        const data = await res.json()
-        return data
-      },
-      async fetchAndUpdateTasks(that) {
-        const tasks = await this.fetchTasks()
-        that.tasks = tasks
-      },
-      async addTaskAPI(task) {
-        const responseRaw = await fetch('http://localhost:5000/tasks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(task)
-        }) 
-        const responseJson = await responseRaw.json()
-        return task
-      }
-    },
-    created() {
-      this.fetchAndUpdateTasks(this)
-    }
+  }
   }
 </script>
 
