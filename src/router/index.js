@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import About from '../views/AboutView'
-import Home from '../views/HomeView'
+import About from '../views/AboutView.vue'
+import Home from '../views/HomeView.vue'
+import Quiz from '../views/QuizView.vue'
+import UploadQuiz from '../views/UploadQuiz.vue'
+import Login from '../views/Login.vue'
+import Admin from '../views/Admin.vue'
 
 const routes = [
   {
@@ -12,6 +16,26 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/quiz/:sessionID',
+    name: 'Quiz',
+    component: Quiz
+  },
+  {
+    path: '/upload',
+    name: 'upload',
+    component: UploadQuiz
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: Admin
   }
 ]
 
